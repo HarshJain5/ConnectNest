@@ -34,7 +34,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "/",
+  baseURL: "https://connectnest-lfzk.onrender.com",
 });
 
 // ✅ Add token automatically
