@@ -34,20 +34,20 @@
 import axios from "axios";
 
 
-const axios = axios.create({
+const instance = axios.create({
   baseURL: "https://connectnest-lfzk.onrender.com" || '/',
 
 });
 
 // ✅ Add token automatically
-axios.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
 // ✅ Handle token expiry globally
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   (res) => res,
   (err) => {
     const originalRequest = err.config;
@@ -78,7 +78,7 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios;
+export default instance;
 
 
 // 🔥 BONUS — Alert ko Modal Me Convert Karna
