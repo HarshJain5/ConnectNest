@@ -25,13 +25,12 @@ app.use('/api/super-admin', superAdminRouter); // approve/reject admins
 
 const path = require('path');
 
-// 1. Static files serve karein (Frontend build folder)
-// Agar aapka folder structure: /root/backend aur /root/frontend hai toh:
-const buildPath = path.join(__dirname, '../client/build'); // Vite ke liye 'dist', CRA ke liye 'build'
+
+const buildPath = path.join(__dirname, '../client/build'); 
 app.use(express.static(buildPath));
 
-// 2. Catch-all route: Saare unknown routes ko index.html par bhejien
-app.get('/*', (req, res) => {
+
+app.get('*', (req, res) => {
     res.sendFile(path.join(buildPath, 'index.html'));
 });
 
