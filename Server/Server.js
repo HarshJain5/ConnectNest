@@ -22,7 +22,7 @@ app.use('/api/admin', adminRouter);           // admin dashboard, add user
 app.use('/api/resident', residentRouter);     // user actions
 app.use('/api/super-admin', superAdminRouter); // approve/reject admins
 
-JavaScript
+
 const path = require('path');
 
 // 1. Static files serve karein (Frontend build folder)
