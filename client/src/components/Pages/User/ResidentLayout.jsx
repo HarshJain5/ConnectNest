@@ -199,6 +199,7 @@ function ResidentLayout({ children }) {
       <style>{`
         .dashboard-page {
           display: flex;
+          height: 100vh;
           background-color: #2C3E50;
         }
 

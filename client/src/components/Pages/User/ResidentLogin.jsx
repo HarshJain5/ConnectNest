@@ -509,6 +509,7 @@ body {
 
 /* ================= WRAPPER ================= */
 .login-wrapper {
+  height: 100vh;
   display: flex;
 }
 

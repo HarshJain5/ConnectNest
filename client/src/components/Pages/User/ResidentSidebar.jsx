@@ -395,6 +395,7 @@ const ResidentSidebar = ({ isMobileOpen, setIsMobileOpen, handleLogout }) => {
       <style>{`
         .sidebar {
           width: 250px;
+          height: 100vh;
           background-color: #2C3E50;
           color: white;
           padding: 2rem 1rem;
