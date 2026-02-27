@@ -24,4 +24,17 @@ app.use('/api/super-admin', superAdminRouter); // approve/reject admins
 
 
 
+
+
+const path = require("path");
+
+// Serve React build
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+// Catch-all route (SPA support)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 app.listen(process.env.PORT,()=>{console.log(`server is running on port ${process.env.PORT}`)})
+
