@@ -199,7 +199,7 @@ function ResidentLayout({ children }) {
       <style>{`
         .dashboard-page {
           display: flex;
-          height: 100vh;
+          min-height: 100dvh;
           background-color: #2C3E50;
         }
 
