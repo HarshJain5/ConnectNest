@@ -23,15 +23,5 @@ app.use('/api/resident', residentRouter);     // user actions
 app.use('/api/super-admin', superAdminRouter); // approve/reject admins
 
 
-const path = require('path');
-
-
-const buildPath = path.join(__dirname, '../client/build'); 
-app.use(express.static(buildPath));
-
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(buildPath, 'index.html'));
-});
 
 app.listen(process.env.PORT,()=>{console.log(`server is running on port ${process.env.PORT}`)})
