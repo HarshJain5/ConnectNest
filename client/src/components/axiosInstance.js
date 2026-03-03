@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const instance = axios.create({
-  baseURL: "https://connect-nest-steel.vercel.app",
+  baseURL: "https://connectnest-lfzk.onrender.com",
 
 });
 
