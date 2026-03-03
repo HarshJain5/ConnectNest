@@ -1,5 +1,5 @@
 
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
 // const sendMail = async (to, subject, html) => {
 //   const transporter = nodemailer.createTransport({
@@ -10,7 +10,6 @@ const nodemailer = require("nodemailer");
 //     },
 //   });
 
-  
 //   const mailOptions = {
 //     from: process.env.MAIL_ID,
 //     to,
@@ -20,29 +19,38 @@ const nodemailer = require("nodemailer");
 
 //   await transporter.sendMail(mailOptions);
 // };
+
+// module.exports = { sendMail };
+
+const SibApiV3Sdk = require("sib-api-v3-sdk");
+
 const sendMail = async (to, subject, html) => {
-  const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // very important
-  auth: {
-    user: process.env.MAIL_ID,
-    pass: process.env.MAIL_PASSWORD,
-  },
-});
+  try {
+    const client = SibApiV3Sdk.ApiClient.instance;
 
-  // ✅ ADD THIS FOR DEBUG
-  await transporter.verify();
-  console.log("SMTP connected successfully");
+    const apiKey = client.authentications["api-key"];
+    apiKey.apiKey = process.env.BREVO_API_KEY;
 
-  const mailOptions = {
-    from: process.env.MAIL_ID,
-    to,
-    subject,
-    html,
-  };
+    const tranEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
-  await transporter.sendMail(mailOptions);
+    const sender = {
+      email: process.env.MAIL_ID, // verified sender email in Brevo
+      name: "ConnectNest",
+    };
+
+    const receivers = [{ email: to }];
+
+    await tranEmailApi.sendTransacEmail({
+      sender,
+      to: receivers,
+      subject,
+      htmlContent: html,
+    });
+
+    console.log("✅ Email sent successfully");
+  } catch (error) {
+    console.error("❌ Email error:", error.response?.body || error.message);
+  }
 };
 
-module.exports = { sendMail };
+module.exports = sendMail;
