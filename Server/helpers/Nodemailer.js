@@ -1,28 +1,37 @@
 
 const nodemailer = require("nodemailer");
 
-const sendMail = async (to, subject, html) => {
-  // const transporter = nodemailer.createTransport({
-  //   service: "gmail",
-  //   auth: {
-  //     user: process.env.MAIL_ID,
-  //     pass: process.env.MAIL_PASSWORD,
-  //   },
-  // });
+// const sendMail = async (to, subject, html) => {
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: process.env.MAIL_ID,
+//       pass: process.env.MAIL_PASSWORD,
+//     },
+//   });
 
+  
+//   const mailOptions = {
+//     from: process.env.MAIL_ID,
+//     to,
+//     subject,
+//     html,
+//   };
+
+//   await transporter.sendMail(mailOptions);
+// };
+const sendMail = async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.MAIL_ID,
-    pass: process.env.MAIL_PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  connectionTimeout: 15000,
-});
+    service: "gmail",
+    auth: {
+      user: process.env.MAIL_ID,
+      pass: process.env.MAIL_PASSWORD,
+    },
+  });
+
+  // ✅ ADD THIS FOR DEBUG
+  await transporter.verify();
+  console.log("SMTP connected successfully");
 
   const mailOptions = {
     from: process.env.MAIL_ID,
