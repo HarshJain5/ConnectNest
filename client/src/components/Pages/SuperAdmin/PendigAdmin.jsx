@@ -4,6 +4,28 @@ import axios from "../../../components/axiosInstance"
 function PendingAdmin() {
   const [admins, setAdmins] = useState([]);
 
+  const [rejectModal, setRejectModal] = useState({
+  show: false,
+  id: null,
+  reason: ""
+});
+
+const [toast, setToast] = useState({
+  show: false,
+  message: "",
+  type: "success"
+});
+
+useEffect(() => {
+  if (toast.show) {
+    const timer = setTimeout(() => {
+      setToast(prev => ({ ...prev, show: false }));
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }
+}, [toast.show]);
+
   const fetchAdmins = async () => {
     const res = await axios.get("/api/super-admin/pending-admins");
     setAdmins(res.data);
@@ -11,15 +33,37 @@ function PendingAdmin() {
 
   const handleApprove = async (id) => {
     await axios.put(`/api/super-admin/approve/${id}`);
-    alert("Approved!");
+    setToast({
+  show: true,
+  message: "Admin approved successfully!",
+  type: "success"
+});
     fetchAdmins(); // Refresh
   };
 
-  const handleReject = async (id) => {
-    await axios.put(`/api/super-admin/reject/${id}`);
-    alert("Rejected!");
-    fetchAdmins(); // Refresh
-  };
+  const handleReject = async () => {
+  if (!rejectModal.reason.trim()) {
+    setToast({
+      show: true,
+      message: "Please provide rejection reason!",
+      type: "danger"
+    });
+    return;
+  }
+
+  await axios.put(`/api/super-admin/reject/${rejectModal.id}`, {
+    reason: rejectModal.reason
+  });
+
+  setToast({
+    show: true,
+    message: "Admin rejected successfully!",
+    type: "danger"
+  });
+
+  setRejectModal({ show: false, id: null, reason: "" });
+  fetchAdmins();
+};
 
   useEffect(() => {
     fetchAdmins();
@@ -50,12 +94,77 @@ function PendingAdmin() {
             <p><strong>Address:</strong> {admin.communityId.address}, {admin.communityId.city}, {admin.communityId.state} - {admin.communityId.pincode}</p>
             <div className="d-flex gap-3">
               <button className="btn btn-success" onClick={() => handleApprove(admin._id)}>✅ Approve</button>
-              <button className="btn btn-danger" onClick={() => handleReject(admin._id)}>❌ Reject</button>
+              <button className="btn btn-danger" onClick={() =>
+  setRejectModal({ show: true, id: admin._id, reason: "" })
+}>❌ Reject</button>
             </div>
           </div>
         </div>
       ))
     )}
+    {rejectModal.show && (
+  <div
+    className="modal fade show d-block"
+    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+  >
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title text-danger">Reject Admin</h5>
+        </div>
+        <div className="modal-body">
+          <label className="form-label">Reason for rejection</label>
+          <textarea
+            className="form-control"
+            rows="3"
+            value={rejectModal.reason}
+            onChange={(e) =>
+              setRejectModal({ ...rejectModal, reason: e.target.value })
+            }
+          />
+        </div>
+        <div className="modal-footer">
+          <button
+            className="btn btn-secondary"
+            onClick={() =>
+              setRejectModal({ show: false, id: null, reason: "" })
+            }
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => handleReject()}
+          >
+            Confirm Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{toast.show && (
+  <div
+    className="toast show position-fixed top-0 end-0 m-4 shadow"
+    role="alert"
+    style={{ zIndex: 9999, minWidth: "280px" }}
+  >
+    <div className={`toast-header bg-${toast.type} text-white`}>
+      <strong className="me-auto">
+        {toast.type === "success" ? "Success" : "Action Completed"}
+      </strong>
+      <button
+        type="button"
+        className="btn-close btn-close-white"
+        onClick={() => setToast({ ...toast, show: false })}
+      ></button>
+    </div>
+    <div className="toast-body">
+      {toast.message}
+    </div>
+  </div>
+)}
   </div>
 );
 }

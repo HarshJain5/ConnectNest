@@ -12,6 +12,9 @@ function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   // 🔐 strong password validation
   const handlePasswordChange = (value) => {
     setPassword(value);
@@ -58,210 +61,294 @@ function ResetPassword() {
   };
 
   return (
-    <div className="reset-password-page">
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  <div className="admin-login-page">
 
-          body {
-              font-family: 'Poppins', sans-serif;
-              background-color: #2C3E50;
-              position: relative;
-          }
-          .reset-password-page {
-              min-height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              padding: 1rem;
-              box-sizing: border-box;
-              overflow-y: auto;
-              color: #2C3E50;
-          }
-          .background-squares {
-              position: fixed;
-              width: 100%;
-              height: 100%;
-              top: 0;
-              left: 0;
-              overflow: hidden;
-              z-index: -1;
-          }
-          .square {
-              position: absolute;
-              background-color: rgba(255, 255, 255, 0.1);
-              border-radius: 10px;
-              animation: moveSquare 20s infinite ease-in-out;
-          }
-          @keyframes moveSquare {
-              0% { transform: translate(0, 0) rotate(0deg); opacity: 0.8; }
-              20% { transform: translate(200px, 100px) rotate(45deg); opacity: 0.6; }
-              40% { transform: translate(50px, 300px) rotate(90deg); opacity: 0.9; }
-              60% { transform: translate(-100px, -50px) rotate(135deg); opacity: 0.7; }
-              80% { transform: translate(-200px, 200px) rotate(180deg); opacity: 0.5; }
-              100% { transform: translate(0, 0) rotate(0deg); opacity: 0.8; }
-          }
-          .square:nth-child(1) { top: 10%; left: 20%; width: 100px; height: 100px; animation-duration: 18s; }
-          .square:nth-child(2) { bottom: 5%; right: 15%; width: 80px; height: 80px; animation-duration: 22s; animation-delay: 2s; }
-          .square:nth-child(3) { top: 50%; left: 5%; width: 120px; height: 120px; animation-duration: 25s; animation-delay: 4s; }
-          .square:nth-child(4) { bottom: 30%; left: 40%; width: 90px; height: 90px; animation-duration: 20s; animation-delay: 6s; }
-          .square:nth-child(5) { top: 70%; left: 60%; width: 70px; height: 70px; animation-duration: 19s; animation-delay: 3s; }
-          .square:nth-child(6) { bottom: 10%; left: 70%; width: 110px; height: 110px; animation-duration: 23s; animation-delay: 5s; }
+    <style>{`
+      body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg,#eef2f7,#f8f9fb);
+      }
 
-          .form-container {
-              z-index: 10;
-              max-width: 500px;
-              width: 90%;
-              background-color: #ffffff;
-              border-radius: 1.5rem;
-              box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-              border: 1px solid #e5e7eb;
-              animation: fadeIn 1s ease-in-out;
-              padding-bottom: 2.5rem;
-          }
-          .logo-section {
-              background-color: #2C3E50;
-              color: white;
-              padding: 2.5rem 0;
-              margin-top: 0;
-              margin-right: 0;
-              margin-left: 0;
-              border-top-left-radius: 1.5rem;
-              border-top-right-radius: 1.5rem;
-              position: relative;
-              overflow: hidden;
-              text-align: center;
-          }
-          .logo-wave {
-              position: absolute;
-              bottom: -5px;
-              left: 0;
-              width: 100%;
-              height: 50px;
-              background: #ECF0F1;
-              clip-path: ellipse(70% 30% at 50% 100%);
-          }
-          .form-section-title {
-              text-align: center;
-              color: #2C3E50;
-              font-weight: 700;
-              margin-bottom: 2rem;
-              font-size: 1.75rem;
-          }
-          .form-card {
-              background-color: #f8f9fa;
-              border-radius: 1rem;
-              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-              padding: 2rem;
-              margin-bottom: 2rem;
-              border: 1px solid #e5e7eb;
-          }
-          .form-control {
-              border-radius: 0.75rem;
-              border-color: #d1d5db;
-              transition: all 0.3s ease;
-              padding: 0.75rem 1rem;
-          }
-          .form-control:focus {
-              border-color: #2C3E50;
-              box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
-          }
-          .form-label {
-              font-weight: 500;
-              color: #4a5568;
-          }
-          .btn-custom {
-          color:white;
-              background-color: #2C3E50;
-              border-color: #2C3E50;
-              transition: all 0.3s ease;
-              box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
-              font-weight: 600;
-              letter-spacing: 1px;
-              border-radius: 9999px;
-          }
-          .btn-custom:hover {
-          color:white;
-              background-color: #1F3041;
-              border-color: #1F3041;
-              transform: translateY(-2px);
-              box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
-          }
-          .alert-custom {
-              border-radius: 0.75rem;
-          }
-          @keyframes fadeIn {
-              from { opacity: 0; transform: translateY(20px); }
-              to { opacity: 1; transform: translateY(0); }
-          }
-        `}
-      </style>
 
-      <div className="background-squares">
-        {[...Array(6)].map((_, i) => <div key={i} className="square"></div>)}
-      </div>
+      .password-wrapper {
+  position: relative;
+  margin-bottom: 18px;
+}
 
-      <div className="container form-container">
-        <div className="logo-section">
-          <h2 className="logo-text">MyColonyConnect</h2>
-        </div>
 
-        <h2 className="form-section-title">Reset Password</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-card">
-            <div className="mb-3">
-              <label className="form-label">New Password</label>
-              <input
-                type="password"
-                className={`form-control ${passwordError ? "is-invalid" : ""}`}
-                value={password}
-                onChange={(e) => handlePasswordChange(e.target.value)}
-                required
-              />
-              {passwordError && (
-                <small className="text-danger">{passwordError}</small>
-              )}
+.password-wrapper input {
+  border-radius: 50px;
+  padding-right: 45px;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #2C3E50;
+  display: flex;
+  align-items: center;
+}
+
+      .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .login-left {
+        width: 45%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-container {
+        width: 100%;
+        max-width: 420px;
+        background: white;
+        padding: 2rem;
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      }
+
+      .main-title {
+        font-weight: 700;
+        font-size: 2rem;
+        text-align: center;
+        color: #2C3E50;
+        margin-bottom: 5px;
+      }
+
+      .sub-title {
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        color: #444;
+      }
+
+      .divider {
+        margin: 0.5rem 0 1.5rem 0;
+        opacity: 0.4;
+      }
+
+      .form-control {
+        border-radius: 50px;
+        padding: 0.9rem 1.4rem;
+        border: 1px solid #e0e0e0;
+      }
+
+      .form-control:focus {
+        border-color: #2C3E50;
+        box-shadow: 0 0 0 4px rgba(44,62,80,0.15);
+      }
+
+      .btn-custom {
+        background: linear-gradient(135deg,#2C3E50,#1F3041);
+        border: none;
+        border-radius: 50px;
+        padding: 0.9rem;
+        font-weight: 600;
+        width: 100%;
+        color: white;
+        margin-top: 10px;
+      }
+
+      .login-right {
+        width: 55%;
+        position: relative;
+        border-top-left-radius: 60px;
+        border-bottom-left-radius: 60px;
+        overflow: hidden;
+      }
+
+      .login-right::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("https://images.unsplash.com/photo-1556761175-b413da4baf72") center/cover no-repeat;
+      }
+
+      .login-right::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0,0,0,0.7),
+          rgba(0,0,0,0.5)
+        );
+      }
+
+      .image-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 40px;
+        z-index: 2;
+      }
+
+      .custom-alert {
+        padding: 12px 18px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .error-alert {
+        background-color: #fdecea;
+        color: #b71c1c;
+        border: 1px solid #f5c2c7;
+      }
+
+      .success-alert {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+        border: 1px solid #a5d6a7;
+      }
+
+      .form-control.is-invalid {
+  background-image: none !important;
+  padding-right: 45px !important;
+}
+
+      @media (max-width: 992px) {
+  .login-wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-left {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 380px;
+    padding: 1.8rem;
+    border-radius: 20px;
+  }
+
+  .login-right {
+    display: none;
+  }
+
+  .main-title {
+    font-size: 1.6rem;
+  }
+
+  .sub-title {
+    font-size: 0.9rem;
+  }
+}
+    `}</style>
+
+    <div className="login-wrapper">
+
+      {/* LEFT SIDE */}
+      <div className="login-left">
+        <div className="form-container">
+
+          <h2 className="main-title">ConnectNest</h2>
+          <h5 className="sub-title">Reset Password</h5>
+
+          <hr className="divider" />
+
+          {/* MESSAGE ABOVE FORM */}
+          {message && (
+            <div className={`custom-alert ${message.startsWith("❌") ? "error-alert" : "success-alert"}`}>
+              {message}
             </div>
+          )}
 
-            <div className="mb-3">
-              <label className="form-label">Confirm Password</label>
-              <input
-                type="password"
-                className="form-control"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+          <form onSubmit={handleSubmit}>
 
-          <div className="text-center">
+            <label className="form-label">New Password</label>
+
+<div className="password-wrapper">
+  <input
+    type={showPassword ? "text" : "password"}
+    className={`form-control ${passwordError ? "is-invalid" : ""}`}
+    value={password}
+    onChange={(e) => handlePasswordChange(e.target.value)}
+    required
+  />
+
+  <span
+    className="toggle-icon"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+  </span>
+</div>
+
+            {passwordError && (
+              <small className="text-danger mb-3 d-block">{passwordError}</small>
+            )}
+
+            <label className="form-label mt-3">Confirm Password</label>
+
+<div className="password-wrapper">
+  <input
+    type={showConfirmPassword ? "text" : "password"}
+    className="form-control"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    required
+  />
+
+  <span
+    className="toggle-icon"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+  >
+    <i className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+  </span>
+</div>
             <button
               type="submit"
-              className="btn btn-custom btn-lg px-5"
+              className="btn btn-custom mb-3"
               disabled={loading || passwordError}
             >
               {loading ? "Updating..." : "Update Password"}
             </button>
 
-            <hr />
-            <Link to="/admin-login">
-              <button type="button" className="form-control btn btn-dark mt-2">
-                Back to Login
-              </button>
-            </Link>
-          </div>
-        </form>
+            <hr className="divider" />
 
-        {message && (
-          <div className={`alert ${message.startsWith("❌") ? "alert-danger" : "alert-success"} mt-3`}>
-            {message}
-          </div>
-        )}
+            <div style={{textAlign:"center"}}>
+              <Link to="/admin-login" style={{textDecoration:"none", color:"#2C3E50"}}>
+                Back to Login
+              </Link>
+            </div>
+
+          </form>
+        </div>
       </div>
+
+      {/* RIGHT SIDE */}
+      <div className="login-right">
+        <div className="image-overlay">
+          <h3>Secure Password Update</h3>
+          <p>Your new password must be strong and secure.</p>
+        </div>
+      </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default ResetPassword;

@@ -17,7 +17,7 @@ router.get('/pending-admins', async (req, res) => {
 
 
 
-router.put('/approve/:id', async (req, res) => {
+router.put('/approve/:id', async (req, res) => { 
   try {
     const admin = await User.findByIdAndUpdate(
       req.params.id,
@@ -50,7 +50,44 @@ router.put('/approve/:id', async (req, res) => {
   }
 });
 
+router.put('/reject/:id', async (req, res) => {
+  try {
+    const { reason } = req.body;
 
+    if (!reason) {
+      return res.status(400).json({ error: "Rejection reason required" });
+    }
+
+    const admin = await User.findById(req.params.id).populate('communityId');
+    if (!admin) return res.status(404).json({ error: "Admin not found" });
+
+    // 👉 Send rejection email
+    await sendMail(
+      admin.email,
+      "Admin Registration Rejected",
+      `
+        <h3>Registration Rejected</h3>
+        <p>Your admin registration for <strong>CONNECTNEST</strong> has been rejected.</p>
+        <p><strong>Reason:</strong> ${reason}</p>
+        <p>If you believe this is a mistake, please contact support.</p>
+      `
+    );
+
+    // 👉 Delete Community
+    if (admin.communityId) {
+      await Community.findByIdAndDelete(admin.communityId._id);
+    }
+
+    // 👉 Delete User
+    await User.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Admin rejected, email sent, and records deleted." });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong." });
+  }
+});
 
 
 module.exports = router; 

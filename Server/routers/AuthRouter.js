@@ -223,7 +223,7 @@ router.post("/forget-password", async (req, res) => {
     if (!user) return res.status(404).json({ error: "Email not registered" });
 
     // create short-lived JWT (15 minutes)
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "15m" });
 
     // store token & expiry in DB (so we can invalidate / ensure one-time-use)
     user.resetToken = token;

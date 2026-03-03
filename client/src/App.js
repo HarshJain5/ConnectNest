@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Contextapi, ContextProvider } from './contextapi/Contextapi';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import Path from './components/Path';
 import Register from './components/Pages/Admin/Register';
 import ResidentLogin from './components/Pages/User/ResidentLogin';
