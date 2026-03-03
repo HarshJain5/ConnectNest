@@ -22,12 +22,14 @@ const nodemailer = require("nodemailer");
 // };
 const sendMail = async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_ID,
-      pass: process.env.MAIL_PASSWORD,
-    },
-  });
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // very important
+  auth: {
+    user: process.env.MAIL_ID,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
 
   // ✅ ADD THIS FOR DEBUG
   await transporter.verify();
