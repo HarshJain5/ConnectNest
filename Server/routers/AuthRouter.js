@@ -294,15 +294,71 @@ router.post("/forget-password", async (req, res) => {
 
     // send the mail (re-usable sendMail)
     await sendMail(
-      user.email,
-      "Connectopia - Password Reset",
-      `
-        <p>Hello ${user.firstName || ""},</p>
-        <p>We received a request to reset your password. Click the link below to set a new password. This link expires in 15 minutes.</p>
-        <p><a href="${resetLink}">Reset your password</a></p>
-        <p>If you didn't request this, ignore this email.</p>
-      `
-    );
+  user.email,
+  "Reset Your Password - ConnectNest",
+  `
+  <div style="font-family: Arial, sans-serif; background:#f4f7f9; padding:20px;">
+    
+    <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
+      
+      <!-- HEADER -->
+      <div style="background:#2C3E50; color:white; padding:20px; text-align:center;">
+        <h2 style="margin:0;">ConnectNest</h2>
+        <p style="margin:5px 0 0;">Smart Community Management</p>
+      </div>
+
+      <!-- BODY -->
+      <div style="padding:25px;">
+        <h3 style="margin-top:0;">Reset Your Password</h3>
+        
+        <p>Hello ${user.firstName || "User"},</p>
+
+        <p>
+          We received a request to reset your password for your 
+          <strong>ConnectNest</strong> account.
+        </p>
+
+        <p>
+          Click the button below to create a new password:
+        </p>
+
+        <!-- BUTTON -->
+        <div style="text-align:center; margin:30px 0;">
+          <a href="${resetLink}" 
+             style="background:#2C3E50; color:white; padding:12px 25px; 
+                    text-decoration:none; border-radius:30px; font-weight:600;">
+            Reset Password
+          </a>
+        </div>
+
+        <p style="font-size:14px; color:#555;">
+          ⏳ This link will expire in <strong>15 minutes</strong>.
+        </p>
+
+        <p style="font-size:14px; color:#555;">
+          If you did not request a password reset, you can safely ignore this email.
+        </p>
+
+        <hr style="margin:25px 0;" />
+
+        <p style="font-size:13px; color:#888;">
+          Having trouble? Copy & paste this link in your browser:
+        </p>
+
+        <p style="font-size:13px; word-break:break-all; color:#2C3E50;">
+          ${resetLink}
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#666;">
+        © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+  `
+);
 
     res.json({ message: "Reset link sent to your email (if it exists in our system)." });
   } catch (err) {
