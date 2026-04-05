@@ -45,10 +45,69 @@ router.post("/verify-email", async (req, res) => {
     const link = `${frontendurl}/verify-email/${token}`;
 
     await sendMail(
-      email,
-      "Verify your email",
-      `<a href="${link}">Click here to verify</a>`
-    );
+  email,
+  "Verify Your Email - ConnectNest",
+  `
+  <div style="font-family: Arial, sans-serif; background:#f4f7f9; padding:20px;">
+    
+    <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
+      
+      <!-- HEADER -->
+      <div style="background:#2C3E50; color:white; padding:20px; text-align:center;">
+        <h2 style="margin:0;">ConnectNest</h2>
+        <p style="margin:5px 0 0;">Smart Community Management</p>
+      </div>
+
+      <!-- BODY -->
+      <div style="padding:25px;">
+        <h3 style="margin-top:0;">Verify Your Email</h3>
+        
+        <p>
+          Thank you for registering with <strong>ConnectNest</strong> 🎉
+        </p>
+
+        <p>
+          To complete your registration and activate your account,
+          please verify your email by clicking the button below:
+        </p>
+
+        <!-- BUTTON -->
+        <div style="text-align:center; margin:30px 0;">
+          <a href="${link}" 
+             style="background:#2C3E50; color:white; padding:12px 25px; 
+                    text-decoration:none; border-radius:30px; font-weight:600;">
+            Verify Email
+          </a>
+        </div>
+
+        <p style="font-size:14px; color:#555;">
+          ⏳ This link will expire in <strong>15 minutes</strong>.
+        </p>
+
+        <p style="font-size:14px; color:#555;">
+          If you did not request this, you can safely ignore this email.
+        </p>
+
+        <hr style="margin:25px 0;" />
+
+        <p style="font-size:13px; color:#888;">
+          Having trouble? Copy & paste this link in your browser:
+        </p>
+
+        <p style="font-size:13px; word-break:break-all; color:#2C3E50;">
+          ${link}
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#666;">
+        © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+  `
+);
 
     res.json({ message: "Verification email sent" });
   } catch (err) {
