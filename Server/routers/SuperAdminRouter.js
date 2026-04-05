@@ -29,19 +29,47 @@ router.put('/approve/:id', async (req, res) => {
 
     // 👉 Send approval email
     await sendMail(
-      admin.email,
-      "Your Admin Access is Approved!",
-      `
-        <h3>Congratulations!</h3>
-        <p>Your registration has been approved in <strong>CONNECTOPIA</strong>. Below are your credentials:</p>
-        <ul>
-          <li><strong>Login ID:</strong> ${admin.email}</li>
-          <li><strong>Password:</strong> (Password you set at registration)</li>
-          <li><strong>Community ID:</strong> ${admin.communityId.communityCode}</li>
-        </ul>
-        <p><a href=${frontendurl}/admin-login >Login Here</a></p>
-      `
-    );
+  admin.email,
+  "🎉 Your Admin Access is Approved - ConnectNest",
+  `
+  <div style="font-family: Arial, sans-serif; background:#f4f7f9; padding:20px;">
+    
+    <div style="max-width:600px; margin:auto; background:white; border-radius:10px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+
+      <div style="background:#2C3E50; color:white; padding:20px; text-align:center;">
+        <h2 style="margin:0;">ConnectNest</h2>
+        <p style="margin:5px 0;">Smart Community Management</p>
+      </div>
+
+      <div style="padding:25px; color:#333;">
+        <h3>🎉 Congratulations, ${admin.firstName}!</h3>
+
+        <p>Your admin registration has been <strong style="color:green;">approved</strong>.</p>
+
+        <div style="background:#f8f9fa; padding:15px; border-radius:8px; margin:20px 0;">
+          <p><strong>Login ID:</strong> ${admin.email}</p>
+          <p><strong>Password:</strong> (Use the password you created)</p>
+          <p><strong>Community ID:</strong> ${admin.communityId.communityCode}</p>
+        </div>
+
+        <p>You can now manage your society dashboard.</p>
+
+        <div style="text-align:center; margin-top:25px;">
+          <a href="${frontendurl}/admin-login"
+            style="background:#2C3E50; color:white; padding:12px 25px; border-radius:30px; text-decoration:none;">
+            Login to Dashboard
+          </a>
+        </div>
+      </div>
+
+      <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px;">
+        © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+  `
+);
 
     res.json({ message: "Admin approved and email sent." });
   } catch (err) {
@@ -63,15 +91,46 @@ router.put('/reject/:id', async (req, res) => {
 
     // 👉 Send rejection email
     await sendMail(
-      admin.email,
-      "Admin Registration Rejected",
-      `
-        <h3>Registration Rejected</h3>
-        <p>Your admin registration for <strong>CONNECTNEST</strong> has been rejected.</p>
-        <p><strong>Reason:</strong> ${reason}</p>
-        <p>If you believe this is a mistake, please contact support.</p>
-      `
-    );
+  admin.email,
+  "⚠️ Admin Registration Rejected - ConnectNest",
+  `
+  <div style="font-family: Arial, sans-serif; background:#f4f7f9; padding:20px;">
+    
+    <div style="max-width:600px; margin:auto; background:white; border-radius:10px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+
+      <div style="background:#e74c3c; color:white; padding:20px; text-align:center;">
+        <h2 style="margin:0;">ConnectNest</h2>
+        <p style="margin:5px 0;">Registration Update</p>
+      </div>
+
+      <div style="padding:25px; color:#333;">
+        <h3>⚠️ Hello ${admin.firstName},</h3>
+
+        <p>Your admin registration has been <strong style="color:red;">rejected</strong>.</p>
+
+        <div style="background:#fff3f3; padding:15px; border-radius:8px; margin:20px 0;">
+          <p><strong>Reason:</strong></p>
+          <p style="color:#e74c3c;">${reason}</p>
+        </div>
+
+        <p>If you think this was a mistake, feel free to contact support or try registering again.</p>
+
+        <div style="text-align:center; margin-top:25px;">
+          <a href="${frontendurl}"
+            style="background:#2C3E50; color:white; padding:12px 25px; border-radius:30px; text-decoration:none;">
+            Visit ConnectNest
+          </a>
+        </div>
+      </div>
+
+      <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px;">
+        © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+  `
+);
 
     // 👉 Delete Community
     if (admin.communityId) {
