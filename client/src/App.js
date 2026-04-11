@@ -22,6 +22,7 @@ import ManageComplaints from './components/Pages/Admin/ManageComplaints';
 import AdminDashboard from './components/Pages/Admin/AdminDashboard';
 import EmailVerification from './components/Pages/Admin/EmailVerification';
 import VerifyEmail from './components/Pages/Admin/VerifyEmail';
+import ConnectNestLanding from './components/ConnectNestLanding';
 
 function App() {
   const { token } = useContext(Contextapi) || {};
@@ -57,7 +58,9 @@ function App() {
             }
           />
           {/* Login Routes */}
-          <Route path='/' element={<Path />}></Route>
+
+          <Route path='/' element={<ConnectNestLanding />}></Route>
+          <Route path='/path' element={<Path />}></Route>
           <Route path="/verify-email/" element={<EmailVerification />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path='/register' element={<Register />}></Route>
